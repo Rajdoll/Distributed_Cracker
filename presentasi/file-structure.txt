@@ -1,0 +1,30 @@
+distributed-cracker/
+│
+├── frontend/
+│   ├── static/
+│   │   ├── style.css
+│   │   └── main.js
+│   └── templates/
+│   │   └── index.html
+│   └── dockerfile
+│   └── nginx.conf
+│
+├── backend/
+│   ├── app.py
+│   ├── requirements.txt
+│   └── Dockerfile 
+│
+├── data
+│
+├── worker/
+│   ├── Dockerfile
+│   └── worker.py
+│
+├── kubernetes/
+│   ├── deployment.yaml
+│   └── service.yaml
+│   └──storage.yaml
+│
+└── docker-compose.yaml
+
+

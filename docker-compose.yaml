@@ -1,0 +1,38 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "5000:80"
+    networks:
+      - cracker-net
+
+  backend:
+    build: ./backend
+    ports:
+      - "5001:5001"
+    volumes:
+      - ./data:/data
+    networks:
+      - cracker-net
+
+  redis:
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+      - cracker-net
+
+  worker:
+    build: ./worker
+    volumes:
+      - ./data:/data
+    networks:
+      - cracker-net
+    depends_on:
+      - redis
+    deploy:
+      replicas: 4
+
+networks:
+  cracker-net:
+    driver: bridge

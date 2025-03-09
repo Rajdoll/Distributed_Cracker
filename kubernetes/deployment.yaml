@@ -1,0 +1,78 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cracker-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cracker
+  template:
+    metadata:
+      labels:
+        app: cracker
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: frontend
+          image: rajdoll/frontend:latest
+          ports:
+            - containerPort: 5000
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+        - name: backend
+          image: rajdoll/backend:latest
+          ports:
+            - containerPort: 5001
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+          env:
+            - name: REDIS_HOST
+              value: "cracker-service"
+            - name: REDIS_PORT
+              value: "6379"
+        - name: redis
+          image: redis:alpine
+          ports:
+            - containerPort: 6379
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: cracker-data-pvc
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: worker-deployment
+spec:
+  replicas: 4
+  selector:
+    matchLabels:
+      app: worker
+  template:
+    metadata:
+      labels:
+        app: worker
+    spec:
+      securityContext:
+        fsGroup: 1000
+      containers:
+        - name: worker
+          image: rajdoll/worker:latest
+          ports:
+            - containerPort: 80
+          volumeMounts:
+            - name: data-volume
+              mountPath: /data
+          env:
+            - name: REDIS_HOST
+              value: "cracker-service"
+            - name: REDIS_PORT
+              value: "6379"
+      volumes:
+        - name: data-volume
+          persistentVolumeClaim:
+            claimName: cracker-data-pvc

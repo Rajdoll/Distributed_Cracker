@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Distributed Hash Cracker</title>
+    <link rel="stylesheet" href="/static/style.css">
+</head>
+<body>
+    <div class="container">
+        <h1 class="title">Distributed Hash Cracker</h1>
+        
+        <div class="upload-section">
+            <p>Masukkan file yang ingin dicrack</p>
+            <input type="file" id="hashFile" accept=".txt">
+            <p>Masukkan wordlist password</p>
+            <input type="file" id="wordlistFile" accept=".txt">
+            <button onclick="startCracking()" class="glow-button">Start Cracking</button>
+        </div>
+
+        <div class="progress-container">
+            <div class="progress-bar" id="progressBar"></div>
+        </div>
+
+        <div id="result" class="result-box"></div>
+    </div>
+
+    <script src="/static/main.js"></script>
+</body>
+</html>
